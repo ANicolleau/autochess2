@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 using System.IO;
 
 
-namespace API_Auto_Chess.DB
+namespace API_AUTO_CHESS.DB
 {
     public class MySQLconnector
     {
@@ -58,23 +58,20 @@ namespace API_Auto_Chess.DB
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public List<string> DB_Select_All_VAlues(string line)
+        public List<string> Select_All_Values_From_Table(string table)
         {
             List<string> name = new List<string>();
             try
             {
                 this.connection.Open();
                 MySqlCommand cmd = this.connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM champions";
+                cmd.CommandText = $"SELECT * FROM autochess.{table}";
                 cmd.ExecuteNonQuery();
                 MySqlDataReader reader = cmd.ExecuteReader();
-                var count = 0;
                 while (reader.Read())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
-                        name.Add(reader.GetValue(i).ToString());
-
-                    count++;
+                        name.Add($"{reader.GetName(i)} : {reader.GetValue(i).ToString()}");
                 }
                 reader.Close();
                 connection.Close();
